@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class BMIActivity extends AppCompatActivity implements View.OnClickListener{
+public class BMIActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText etHeight, etWeight, etBMI;
     private Button btnCompute;
@@ -34,26 +34,37 @@ public class BMIActivity extends AppCompatActivity implements View.OnClickListen
         float height = Float.parseFloat(etHeight.getText().toString());
         float weight = Float.parseFloat(etWeight.getText().toString());
 
-        if(!validation()){
+        if (!validation()) {
             return;
         }
 
         bmi.setHeight(height);
         bmi.setWeight(weight);
 
-        float result = bmi.calculateBMI();
-        etBMI.setText(Float.toString(result));
+        float calculatedBMI = bmi.calculateBMI();
+        etBMI.setText(Float.toString(calculatedBMI));
 
-        Toast.makeText(this, "" + result, Toast.LENGTH_SHORT).show();
+        String result = "";
+        if (calculatedBMI < 18.5f) {
+            result = "Underweight";
+        } else if (calculatedBMI > 18.5f && calculatedBMI < 24.9f) {
+            result = "Normal Weight";
+        } else if (calculatedBMI > 25 && calculatedBMI < 29.9f) {
+            result = "Overweight";
+        } else if (calculatedBMI >= 30) {
+            result = "Obesity";
+        }
+
+        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
     }
 
-    private boolean validation(){
-        if(TextUtils.isEmpty(etHeight.getText().toString())){
+    private boolean validation() {
+        if (TextUtils.isEmpty(etHeight.getText().toString())) {
             etHeight.setError("Please enter height!!!");
             etHeight.requestFocus();
             return false;
         }
-        if(TextUtils.isEmpty(etWeight.getText().toString())){
+        if (TextUtils.isEmpty(etWeight.getText().toString())) {
             etWeight.setError("Please enter weight!!!");
             etWeight.requestFocus();
             return false;
